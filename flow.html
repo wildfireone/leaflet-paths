@@ -45,7 +45,7 @@
 <aside>Drag to rearrange nodes.</aside>
 
 <footer>
-  
+
 </footer>
 
 <script src="http://d3js.org/d3.v2.min.js" charset="utf-8"></script>
@@ -86,6 +86,7 @@ d3.json("data.json", function(energy) {
       .attr("class", "link")
       .attr("d", path)
       .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+      .style("stroke", function(d) { return d.colour; })
       .sort(function(a, b) { return b.dy - a.dy; });
 
   link.append("title")
@@ -121,7 +122,7 @@ d3.json("data.json", function(energy) {
       .attr("text-anchor", "start");
 
   function dragmove(d) {
-    d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+    d3.select(this).attr("transform", "translate(" + (d.x = Math.max(0, Math.min(width - d.dx, d3.event.x))) + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
     sankey.relayout();
     link.attr("d", path);
   }
