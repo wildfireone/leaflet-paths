@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Svg Alluvials</title>
+
+  <style>
+  body{
+
+  }
+  SVG {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+    .node {
+      cursor: pointer;
+    }
+
+    .node circle {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 3px;
+    }
+
+    .node text {
+      font: 12px sans-serif;
+    }
+
+    path.link {
+      stroke-opacity:0.2 !important;
+    }
+    path.link:hover {
+      stroke-opacity:0.7 !important;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <section>
+    <select id="drop">
+            <option value="">Select one...</option>
+            <option value="company_dock_platform">company_dock_platform</option>
+            <option value="company_dock_vessel_platform">company_dock_vessel_platform</option>
+            <option value="company_item_port_platform">company_item_port_platform</option>
+            <option value="Item_Vessel_Platform">Item_Vessel_Platform</option>
+            <option value="item-load-unload">item-load-unload</option>
+        </select>
+  </section>
+  <section id="graph">
+  </section>
+    <script src="js/jquery.js"></script>
+    <script>
+
+    $("#drop").change(function () {
+       var end = this.value;
+loadSvg("#graph", end)
+       console.log(end);
+   });
+
+    loadSvg("#graph", "company_dock_platform")
+      function loadSvg(selector, url) {
+        var target = document.querySelector(selector);
+
+        // If SVG is supported
+        if (typeof SVGRect != "undefined") {
+          // Request the SVG file
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", url + ".svg", true);
+          ajax.send();
+
+          // Append the SVG to the target
+          ajax.onload = function(e) {
+            target.innerHTML = ajax.responseText;
+          }
+        } else {
+          // Fallback to png
+          target.innerHTML = "<img src='" + url + ".png' />";
+        }
+      }
+    </script>
+
+</body>
+
+</html>
