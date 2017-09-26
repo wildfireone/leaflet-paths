@@ -5,37 +5,8 @@
   <meta charset="utf-8">
 
   <title>Svg Alluvials</title>
+<link rel="stylesheet" href="css/svgstyle.css" />
 
-  <style>
-  body{
-
-  }
-  SVG {
-    display:block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-    .node {
-      cursor: pointer;
-    }
-
-    .node circle {
-      fill: #fff;
-      stroke: steelblue;
-      stroke-width: 3px;
-    }
-
-    .node text {
-      font: 12px sans-serif;
-    }
-
-    path.link {
-      stroke-opacity:0.2 !important;
-    }
-    path.link:hover {
-      stroke-opacity:0.7 !important;
-    }
-  </style>
 
 </head>
 
@@ -49,21 +20,80 @@
             <option value="company_item_port_platform">company_item_port_platform</option>
             <option value="Item_Vessel_Platform">Item_Vessel_Platform</option>
             <option value="item-load-unload">item-load-unload</option>
+            <option value="company-dock-vessel-platform-tagged">company-dock-vessel-platform-tagged</option>
+            <option value="test">test</option>
         </select>
   </section>
   <section id="graph">
   </section>
     <script src="js/jquery.js"></script>
     <script>
+var svg;
+    var nodeClick = function(){
+      $(".node").click(function () {
+        var parenttag = "."+$(this).find("text")[0].innerHTML.split(" ")[0];
+        //$(".Team").addClass("selectedLink");
+        if(ckSelect(parenttag)){
+          rmSelect(parenttag);
+        }
+        else{
+          addSelect(parenttag);
+        }
+
+        console.log(parenttag);
+      });
+    };
+
 
     $("#drop").change(function () {
        var end = this.value;
-loadSvg("#graph", end)
+       loadSvg("#graph", end,nodeClick );
        console.log(end);
-   });
+     });
 
-    loadSvg("#graph", "company_dock_platform")
-      function loadSvg(selector, url) {
+function addSelect(selector){
+  var currentclasses = $(selector).attr("class").split(' ');
+  //console.log(currentclasses);
+  if(currentclasses.indexOf("selectedLink") ==-1){
+    currentclasses.push("selectedLink");
+    var newclasses = currentclasses.join(" ");
+    console.log(newclasses);
+    $(selector).attr("class", newclasses);
+  }
+  //console.log(currentclasses);
+}
+
+function ckSelect(selector){
+  var currentclasses = $(selector).attr("class").split(' ');
+  //console.log(currentclasses);
+  if(currentclasses.indexOf("selectedLink") ==-1){
+    return false;
+  }
+  return true;
+  //console.log(currentclasses);
+}
+
+function rmSelect(selector){
+  var currentclasses = $(selector).attr("class").split(' ');
+  //console.log(currentclasses);
+  if(currentclasses.indexOf("selectedLink") ==-1){
+
+  }
+  else{
+    var idx = currentclasses.indexOf("selectedLink");
+    currentclasses.splice(idx, 1);
+    var newclasses = currentclasses.join(" ");
+    console.log(newclasses);
+    $(selector).attr("class", newclasses);
+
+  }
+  //console.log(currentclasses);
+}
+
+
+
+    loadSvg("#graph", "company_dock_platform", nodeClick)
+      function loadSvg(selector, url, callback) {
         var target = document.querySelector(selector);
 
         // If SVG is supported
@@ -76,12 +106,15 @@ loadSvg("#graph", end)
           // Append the SVG to the target
           ajax.onload = function(e) {
             target.innerHTML = ajax.responseText;
+            callback();
           }
         } else {
           // Fallback to png
           target.innerHTML = "<img src='" + url + ".png' />";
         }
+
       }
+
     </script>
 
 </body>

@@ -1,0 +1,32 @@
+body{
+
+}
+SVG {
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+}
+  .node {
+    cursor: pointer;
+  }
+
+  .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+  }
+
+  .node text {
+    font: 12px sans-serif;
+  }
+
+  path.link {
+    stroke-opacity:0.2 !important;
+  }
+  path.link:hover {
+    stroke-opacity:0.7 !important;
+  }
+
+  path.selectedLink {
+    stroke-opacity:0.7 !important;
+  }
