@@ -25,6 +25,7 @@
             <option value="testautosort">company-dock-vessel-platform-tagged-auto</option>
             <option value="newdata-colection-to-platfrom-company">collection-to-platform (company)</option>
             <option value="newdata-colection-to-platfrom">collection-to-platform </option>
+            <option value="company-collection-delivery-vessel-platform">company-collection-delivery-vessel-platform</option>
             <option value="newdata">newdatatest</option>
         </select>
   </section>
@@ -129,7 +130,9 @@
 
     var nodeClick = function() {
       $(".node").click(function() {
-        var parenttag = "." + $(this).find("text")[0].innerHTML.split(" ")[0];
+        console.log($(this));
+        var parenttag = "." +$(this).attr("snodeid");
+        //var parenttag = "." + $(this).find("text")[0].innerHTML.split(" ")[0];
         //$(".Team").addClass("selectedLink");
         if (ckSelect(parenttag)) {
           rmSelect(parenttag);
