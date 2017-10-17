@@ -131,7 +131,13 @@
     var nodeClick = function() {
       $(".node").click(function() {
         console.log($(this));
-        var parenttag = "." +$(this).attr("snodeid");
+        var parenttag;
+        if($(this).attr("group")=="company"){
+        parenttag = "." +$(this).attr("snodeid");
+        }
+        else{
+          parenttag = "." +$(this).attr("tnodeid");
+        }
         //var parenttag = "." + $(this).find("text")[0].innerHTML.split(" ")[0];
         //$(".Team").addClass("selectedLink");
         if (ckSelect(parenttag)) {
