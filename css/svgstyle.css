@@ -40,6 +40,16 @@ SVG {
     stroke-opacity:0.1 !important;
   }
 
+  path.count1 {
+    stroke-opacity:0.1 !important;
+    stroke-dasharray: 5 !important
+  }
+
+  /*path.multi1 {
+    stroke-opacity:1 !important;
+    stroke-dasharray: 0 !important
+  }*/
+
 
   path.selectedLink {
     stroke-opacity:0.9 !important;
