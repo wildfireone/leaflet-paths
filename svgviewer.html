@@ -29,6 +29,7 @@
             <option value="svgs/company-collection-delivery-vessel-platform">company-collection-delivery-vessel-platform</option>
             <option value="svgs/newdata">newdatatest</option>
         </select> -->
+         <!--<button id="btn" type="button">Show/Hide tracks</button>-->
   </section>
   <section id="graph">
   </section>
@@ -69,6 +70,9 @@
           //innerSVG.attr("transform", d3.event.transform);
         //}
         nodeClick();
+        //applyColours();
+
+
         responsivefy(d3.select("section#graph").select("svg"));
 
         panZoomInstance = svgPanZoom("SVG", {
@@ -76,11 +80,16 @@
            controlIconsEnabled: true,
            fit: true,
            center: true,
-           minZoom: 0.1
+           minZoom: 0.5,
+           refreshRate: 2
          });
-
+         var currentheight  = window.innerHeight;
         // zoom out
-         panZoomInstance.zoom(1)
+         panZoomInstance.zoom(0.7)
+        //  panZoomInstance.panBy({
+        //   x:0,
+        //   y: - Math.max(1024,currentheight/2)
+        // });
 
         // $("#move").on("click", function() {
         //   // Pan by any values from -80 to 80
@@ -92,9 +101,6 @@
 
       });
     }
-
-
-
 
 
     function responsivefy(svg) {
@@ -129,8 +135,10 @@
 
 
     var nodeClick = function() {
-      $(".node").click(function() {
-        console.log($(this));
+
+
+      $("g.node").mouseover(function() {
+        //console.log($(this));
 
         var parenttag =  $(this).find("text")[0].innerHTML
         parenttag = parenttag.hashCode()
@@ -144,6 +152,7 @@
 
         console.log(parenttag);
       });
+
     };
 
     String.prototype.hashCode = function() {
@@ -206,7 +215,7 @@
         var idx = currentclasses.indexOf("selectedLink");
         currentclasses.splice(idx, 1);
         var newclasses = currentclasses.join(" ");
-        console.log(newclasses);
+        //console.log(newclasses);
         $(selector).attr("class", newclasses);
 
       }
@@ -224,7 +233,7 @@
           var idx = currentclasses.indexOf("selectedLink");
           currentclasses.splice(idx, 1);
           var newclasses = currentclasses.join(" ");
-          console.log(newclasses);
+          //console.log(newclasses);
           $(value).attr("class", newclasses);
 
         }
