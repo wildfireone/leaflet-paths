@@ -3,7 +3,7 @@
  * @Date:   27-Sep-172017
  * @Filename: svgstyle.css
  * @Last modified by:   john
- * @Last modified time: 04-Oct-172017
+ * @Last modified time: 20-Oct-172017
  */
 
 
@@ -38,6 +38,7 @@ SVG {
 
   path.link {
     stroke-opacity:0.1 !important;
+    visibility: hidden !important;
   }
 
   path.count1 {
@@ -53,4 +54,5 @@ SVG {
 
   path.selectedLink {
     stroke-opacity:0.9 !important;
+    visibility:visible !important;
   }

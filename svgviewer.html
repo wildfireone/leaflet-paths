@@ -13,7 +13,7 @@
 <body>
 
   <section>
-    <select id="drop">
+    <!-- <select id="drop">
             <option value="">Select one...</option>
             <option value="svgs/new_data_oct17th">newdatatest</option>
             <option value="svgs/company_dock_platform">company_dock_platform</option>
@@ -28,7 +28,7 @@
             <option value="svgs/newdata-colection-to-platfrom">collection-to-platform </option>
             <option value="svgs/company-collection-delivery-vessel-platform">company-collection-delivery-vessel-platform</option>
             <option value="svgs/newdata">newdatatest</option>
-        </select>
+        </select> -->
   </section>
   <section id="graph">
   </section>
@@ -43,7 +43,7 @@
       .attr("height", "100%")
 
 
-    loadSvg2("newdata-colection-to-platfrom-company");
+    loadSvg2("svgs/202122data");
 
     function loadSvg2(graph) {
       $("#graph").empty();
@@ -69,18 +69,18 @@
           //innerSVG.attr("transform", d3.event.transform);
         //}
         nodeClick();
-        //responsivefy(d3.select("section#graph").select("svg"));
+        responsivefy(d3.select("section#graph").select("svg"));
 
-        // panZoomInstance = svgPanZoom("SVG", {
-        //   zoomEnabled: true,
-        //   controlIconsEnabled: true,
-        //   fit: true,
-        //   center: true,
-        //   minZoom: 0.1
-        // });
+        panZoomInstance = svgPanZoom("SVG", {
+           zoomEnabled: true,
+           controlIconsEnabled: true,
+           fit: true,
+           center: true,
+           minZoom: 0.1
+         });
 
         // zoom out
-        // panZoomInstance.zoom(1)
+         panZoomInstance.zoom(1)
 
         // $("#move").on("click", function() {
         //   // Pan by any values from -80 to 80
@@ -120,9 +120,9 @@
 
       // get width of container and resize svg to fit it
       function resize() {
-        var targetHeight = parseInt(window.innerHeight);
-        svg.attr("height", targetHeight - 50);
-        svg.attr("width", window.innerWidth);
+        var targetWidth = parseInt(window.innerWidth);
+        svg.attr("width", targetWidth - 50);
+        svg.attr("height", targetWidth * aspect);
       }
     }
 
