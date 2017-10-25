@@ -130,7 +130,7 @@ function processRow(voyage) {
       if (platform.companyName == firstCompanyName) {
         multi = 1
       };
-      stream.write(i + "," + vessel.Name + ","+ vessel.Name.hashCode + "," + platform.companyName + ","+ platform.companyName.hashCode+ ","  + platform.name + ","+platform.name.hashCode + ","  + voyageCount + "," + multi + "\n");
+      stream.write(i + "," + vessel.Name + ","+ vessel.Name.hashCode() + "," + platform.companyName + ","+ platform.companyName.hashCode()+ ","  + platform.name + ","+platform.name.hashCode() + ","  + voyageCount + "," + multi + "\n");
     }
   });
 

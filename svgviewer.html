@@ -132,18 +132,30 @@
       $(".node").click(function() {
         console.log($(this));
 
-        var parenttag = "." + $(this).find("text")[0].innerHTML.replace(/\s+/g, '-')
+        var parenttag =  $(this).find("text")[0].innerHTML
+        parenttag = parenttag.hashCode()
+        parenttag = "."+parenttag
+
+
+        rmAllSelect();
         //$(".Team").addClass("selectedLink");
-        if (ckSelect(parenttag)) {
-          rmSelect(parenttag);
-        } else {
-          addSelect(parenttag);
-        }
+        addSelect(parenttag);
+
 
         console.log(parenttag);
       });
     };
 
+    String.prototype.hashCode = function() {
+      var hash = 0, i, chr;
+      if (this.length === 0) return hash;
+      for (i = 0; i < this.length; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+      }
+      return hash;
+    };
 
     $("#drop").change(function() {
       var end = this.value;
@@ -152,15 +164,25 @@
     });
 
     function addSelect(selector) {
-      var currentclasses = $(selector).attr("class").split(' ');
+      // var currentclasses = $(selector).attr("class").split(' ');
+      // console.log(currentclasses);
+      // if (currentclasses.indexOf("selectedLink") == -1) {
+      //   currentclasses.push("selectedLink");
+      //   var newclasses = currentclasses.join(" ");
+      //   //console.log(newclasses);
+      //   $(selector).attr("class", newclasses);
+      // }
       //console.log(currentclasses);
-      if (currentclasses.indexOf("selectedLink") == -1) {
+
+      $(selector).each(function(index, value){
+        //console.log(value);
+        var currentclasses = $(value).attr("class").split(' ');
         currentclasses.push("selectedLink");
         var newclasses = currentclasses.join(" ");
-        //console.log(newclasses);
-        $(selector).attr("class", newclasses);
-      }
-      //console.log(currentclasses);
+        //   //console.log(newclasses);
+        $(value).attr("class", newclasses);
+      });
+
     }
 
     function ckSelect(selector) {
@@ -169,7 +191,9 @@
       if (currentclasses.indexOf("selectedLink") == -1) {
         return false;
       }
-      return true;
+      else{
+        return true;
+      }
       //console.log(currentclasses);
     }
 
@@ -186,6 +210,26 @@
         $(selector).attr("class", newclasses);
 
       }
+      //console.log(currentclasses);
+    }
+
+    function rmAllSelect() {
+
+      $('.link').each(function(index, value){
+        //console.log(value);
+        var currentclasses = $(value).attr("class").split(' ');
+        if (currentclasses.indexOf("selectedLink") == -1) {
+
+        } else {
+          var idx = currentclasses.indexOf("selectedLink");
+          currentclasses.splice(idx, 1);
+          var newclasses = currentclasses.join(" ");
+          console.log(newclasses);
+          $(value).attr("class", newclasses);
+
+        }
+      });
+
       //console.log(currentclasses);
     }
 
