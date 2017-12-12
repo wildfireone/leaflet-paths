@@ -17,10 +17,31 @@ SVG {
   margin-right: auto;
 
 }
+#info{
+  float:left;
+  /*background-color: #c2c2c2;*/
+  width : 300px;
+  height: 100px;
+  display:block;
+  z-index: 1;
+  margin:40px;
+  position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#infoPanel {
+
+}
 #graph{
+  position: relative;
+    left: 0;
+    top: 0;
+
   width:100% !important;
   height:100% !important;
   overflow: hidden;
+
 }
 rect {
   cursor: pointer;
@@ -52,19 +73,40 @@ rect {
 
   /*number of platfroms visited */
   path.count1 {
+
+    stroke-width:5px;
+
+
+  }
+
+  /*number of platfroms visited */
+  path.showLinkMultiPlat {
     stroke-opacity:0.5 !important;
-    stroke: red !important;
+    visibility:visible !important;
 
 
   }
 /*number of companies*/
   path.multi0 {
 
-    /*stroke-opacity:0.5 !important;
-    stroke-dasharray: 10 !important;*/
     stroke-dasharray: 10 !important;
 
   }
+  /*number of companies*/
+    path.showLinkMultiOper {
+
+      stroke-opacity:0.5 !important;
+      visibility:visible !important;
+
+    }
+
+    /*number of companies*/
+      path.showLink {
+
+        stroke-opacity:0.2 !important;
+        visibility:visible !important;
+
+      }
 
 
   path.selectedLink {

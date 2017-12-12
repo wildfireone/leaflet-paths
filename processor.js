@@ -13,75 +13,76 @@ const path = require('path');
 const fs = require('fs');
 var i = 0;
 
-var platformList = ["GANNET A",
-  "CAYLEY",
-  "TEAL SOUTH",
-  "SAXON",
-  "GUILLEMOT NORTH",
-  "GODWIN",
-  "ENOCHDHU",
-  "MONAN",
-  "GADWALL",
-  "MONTROSE",
-  "BRIMMOND",
-  "GANNET D",
-  "DAUNTLESS",
-  "GUILLEMOT A",
-  "MARNOCK-SKUA (oil)",
-  "ETTRICK",
-  "CHESTNUT",
-  "MALLARD",
-  "HUNTINGTON",
-  "GOLDEN EAGLE",
-  "GANNET G",
-  "ARBROATH",
-  "ARKWRIGHT",
-  "GANNET F",
-  "HANNAY",
-  "MAULE",
-  "TWEEDSMUIR SOUTH",
-  "ELGIN",
-  "FLEMING",
-  "NELSON",
-  "CARNOUSTIE",
-  "TEAL",
-  "SCOLTY",
-  "SCOTER (oil)",
-  "SHELLEY",
-  "KITTIWAKE",
-  "EVEREST",
-  "GANNET C",
-  "BUZZARD",
-  "MERGANSER",
-  "BRODGAR",
-  "CRATHES",
-  "MARNOCK-SKUA (cond)",
-  "BARDOLINO",
-  "HAWKINS",
-  "BRECHIN",
-  "GUILLEMOT WEST",
-  "FORTIES",
-  "MIRREN",
-  "COOK",
-  "HOWE",
-  "PICT",
-  "WOOD",
-  "HERON",
-  "GUILLEMOT NORTH WEST",
-  "DURWARD",
+var platformList = [
   "SCOTER (gas)",
-  "GANNET E",
-  "SHAW",
-  "DRAKE",
-  "CLAPHAM",
+  "SCOTER (oil)",
+  "MERGANSER",
+  "HERON",
   "EGRET",
-  "GOOSANDER",
+  "MARNOCK-SKUA (oil)",
+  "MARNOCK-SKUA (cond)",
+  "BRECHIN",
+  "ARKWRIGHT",
+  "SHAW",
+  "CARNOUSTIE",
+  "ARBROATH",
+  "WOOD",
+  "MONTROSE",
+  "GODWIN",
+  "CAYLEY",
+  "GANNET D",
+  "GANNET G",
+  "GANNET A",
   "GANNET B",
-  "MADOES",
-  "BUCHAN",
+  "GANNET C",
+  "GANNET E",
+  "GUILLEMOT A",
+  "GUILLEMOT WEST",
+  "GUILLEMOT NORTH",
+  "GUILLEMOT NORTH WEST",
+  "CLAPHAM",
+  "SAXON",
+  "PICT",
+  "TEAL",
+  "TEAL SOUTH",
+  "COOK",
+  "MALLARD",
+  "GADWALL",
   "GROUSE",
+  "KITTIWAKE",
+  "GOOSANDER",
+  "CRATHES",
+  "SCOLTY",
+  "DAUNTLESS",
+  "DURWARD",
+  "BUCHAN",
+  "TWEEDSMUIR SOUTH",
   "TWEEDSMUIR",
-  "SEYMOUR"
+  "HANNAY",
+  "ETTRICK",
+  "GOLDEN EAGLE",
+  "BUZZARD",
+  "BRODGAR",
+  "ENOCHDHU",
+  "CHESTNUT",
+  "SHELLEY",
+  "EVEREST",
+  "DRAKE",
+  "FLEMING",
+  "SEYMOUR",
+  "HAWKINS",
+  "HUNTINGTON",
+  "BARDOLINO",
+  "HOWE",
+  "NELSON",
+  "BRIMMOND",
+  "FORTIES",
+  "MAULE",
+  "MONAN",
+  "MIRREN",
+  "MADOES",
+  "ELGIN",
+  "GANNET F"
 ]
 let jsonStream = StreamArray.make();
 
@@ -89,7 +90,7 @@ var jsonfile = "exp-data/voyages.json";
 
 var stream = fs.createWriteStream("voyages2.csv");
 stream.once('open', function(fd) {
-  stream.write("id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi\n");
+  stream.write("id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi,sortid\n");
   fs.createReadStream(jsonfile).pipe(jsonStream.input);
 
 });
@@ -121,16 +122,17 @@ String.prototype.hashCode = function() {
 function processRow(voyage) {
 
   var vessel = voyage.vessel;
-  var voyageCount = voyage.locations.length;
+  var voyageCount = voyage.locations.length;//multiple platfroms
   var firstCompanyName = voyage.locations[0].companyName;
   voyage.locations.forEach(function(platform) {
-    if (platformList.indexOf(platform.name) > -1) {
+    var indexcheck = platformList.indexOf(platform.name);
+    if ( indexcheck > -1) {
       i++;
       var multi = 0;
       if (platform.companyName != firstCompanyName) {
-        multi = 1
+        multi = 1 //multiple comapnies
       };
-      stream.write(i + "," + vessel.Name + ","+ vessel.Name.hashCode() + "," + platform.companyName + ","+ platform.companyName.hashCode()+ ","  + platform.name + ","+platform.name.hashCode() + ","  + voyageCount + "," + multi + "\n");
+      stream.write(i + "," + vessel.Name + ","+ vessel.Name.hashCode() + "," + platform.companyName + ","+ platform.companyName.hashCode()+ ","  + platform.name + ","+platform.name.hashCode() + ","  + voyageCount + "," + multi + "," + indexcheck +"\n");
     }
   });
 
