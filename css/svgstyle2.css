@@ -49,15 +49,12 @@ rect {
     stroke-dasharray: 0 !important;
   }
 
-
-  /*number of platfroms visited */
   path.count1 {
-    stroke-opacity:0.5 !important;
-    stroke: red !important;
+
 
 
   }
-/*number of companies*/
+
   path.multi0 {
 
     /*stroke-opacity:0.5 !important;

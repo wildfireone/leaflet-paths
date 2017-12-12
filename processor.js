@@ -3,7 +3,7 @@
  * @Date:   20-Oct-172017
  * @Filename: processor.js
  * @Last modified by:   john
- * @Last modified time: 25-Oct-172017
+ * @Last modified time: 22-Nov-172017
  */
 
 
@@ -87,7 +87,7 @@ let jsonStream = StreamArray.make();
 
 var jsonfile = "exp-data/voyages.json";
 
-var stream = fs.createWriteStream("voyages.csv");
+var stream = fs.createWriteStream("voyages2.csv");
 stream.once('open', function(fd) {
   stream.write("id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi\n");
   fs.createReadStream(jsonfile).pipe(jsonStream.input);
@@ -127,7 +127,7 @@ function processRow(voyage) {
     if (platformList.indexOf(platform.name) > -1) {
       i++;
       var multi = 0;
-      if (platform.companyName == firstCompanyName) {
+      if (platform.companyName != firstCompanyName) {
         multi = 1
       };
       stream.write(i + "," + vessel.Name + ","+ vessel.Name.hashCode() + "," + platform.companyName + ","+ platform.companyName.hashCode()+ ","  + platform.name + ","+platform.name.hashCode() + ","  + voyageCount + "," + multi + "\n");
