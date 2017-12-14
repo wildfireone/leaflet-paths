@@ -1,13 +1,3 @@
-/**
- * @Author: John Isaacs <john>
- * @Date:   05-Sep-172017
- * @Filename: sankey.js
- * @Last modified by:   john
- * @Last modified time: 05-Sep-172017
- */
-
-
-
 d3.sankey = function() {
   var sankey = {},
       nodeWidth = 24,
@@ -128,7 +118,9 @@ d3.sankey = function() {
         node.x = x;
         node.dx = nodeWidth;
         node.sourceLinks.forEach(function(link) {
-          nextNodes.push(link.target);
+          if (nextNodes.indexOf(link.target) < 0) {
+            nextNodes.push(link.target);
+          }
         });
       });
       remainingNodes = nextNodes;
@@ -137,7 +129,7 @@ d3.sankey = function() {
 
     //
     moveSinksRight(x);
-    scaleNodeBreadths((width - nodeWidth) / (x - 1));
+    scaleNodeBreadths((size[0] - nodeWidth) / (x - 1));
   }
 
   function moveSourcesRight() {
@@ -193,7 +185,6 @@ d3.sankey = function() {
 
       links.forEach(function(link) {
         link.dy = link.value * ky;
-        link.colour = colour(link);
       });
     }
 
@@ -296,26 +287,7 @@ d3.sankey = function() {
   }
 
   function value(link) {
-    console.log("link value called")
     return link.value;
-  }
-  function colour(link) {
-console.log("colour called")
-  switch(link.type){
-    case 1:return "#330";
-    case 2:return "#440";
-    case 3:return "#550";
-    case 4:return "#660";
-    case 5:return "#770";
-    case 6:return "#880";
-    case 7:return "#990";
-    case 8:return "#aa0";
-    case 9:return "#bb0";
-    case 10:return "#cc0";
-    default:return "#ff0";
-
-  }
-
   }
 
   return sankey;

@@ -3,7 +3,7 @@
  * @Date:   27-Sep-172017
  * @Filename: svgstyle.css
  * @Last modified by:   john
- * @Last modified time: 22-Nov-172017
+ * @Last modified time: 13-Dec-172017
  */
 
 
@@ -103,13 +103,13 @@ rect {
     /*number of companies*/
       path.showLink {
 
-        stroke-opacity:0.2 !important;
+        stroke-opacity:0.1 !important;
         visibility:visible !important;
 
       }
 
 
   path.selectedLink {
-    stroke-opacity:0.5 !important;
+    stroke-opacity:1 !important;
     visibility:visible !important;
   }

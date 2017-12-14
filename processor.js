@@ -3,7 +3,7 @@
  * @Date:   20-Oct-172017
  * @Filename: processor.js
  * @Last modified by:   john
- * @Last modified time: 22-Nov-172017
+ * @Last modified time: 14-Dec-172017
  */
 
 
@@ -84,57 +84,104 @@ var platformList = [
   "ELGIN",
   "GANNET F"
 ]
-let jsonStream = StreamArray.make();
+//let jsonStream = StreamArray.make();
 
-var jsonfile = "exp-data/voyages.json";
+//var jsonfile = "exp-data/voyages.json";
 
-var stream = fs.createWriteStream("voyages2.csv");
-stream.once('open', function(fd) {
-  stream.write("id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi,sortid\n");
-  fs.createReadStream(jsonfile).pipe(jsonStream.input);
 
-});
 
-//You'll get json objects here
-jsonStream.output.on('data', function({
-  index,
-  value
-}) {
-  processRow(value);
-});
+//var stream = fs.createWriteStream("voyages3.csv");
+//stream.once('open', function(fd) {
+//  stream.write("id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi,sortid\n");
+  //fs.createReadStream(jsonfile).pipe(jsonStream.input);
 
-jsonStream.output.on('end', function() {
-  console.log('All done');
-  stream.end();
-});
+//});
 
+// //You'll get json objects here
+// jsonStream.output.on('data', function({
+//   index,
+//   value
+// }) {
+//
+//   processRow(value);
+// });
+//
+// jsonStream.output.on('end', function() {
+//   console.log('All done');
+//
+// });
 
 String.prototype.hashCode = function() {
-  var hash = 0, i, chr;
+  var hash = 0,
+    i, chr;
   if (this.length === 0) return hash;
   for (i = 0; i < this.length; i++) {
-    chr   = this.charCodeAt(i);
-    hash  = ((hash << 5) - hash) + chr;
+    chr = this.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
     hash |= 0; // Convert to 32bit integer
   }
   return hash;
 };
-function processRow(voyage) {
 
-  var vessel = voyage.vessel;
-  var voyageCount = voyage.locations.length;//multiple platfroms
-  var firstCompanyName = voyage.locations[0].companyName;
-  voyage.locations.forEach(function(platform) {
+Array.prototype.removeValue = function(name, value) {
+  var array = $.map(this, function(v, i) {
+    return v[name] === value ? null : v;
+  });
+  this.length = 0; //clear original array
+  this.push.apply(this, array); //push all elements except the one we want to delete
+}
+
+fs.appendFileSync('voyages3.csv',"id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi,sortid\n");
+
+var json = JSON.parse(require('fs').readFileSync('exp-data/voyages.json', 'utf8'));
+for (var r = 0; r < json.length; r++) {
+  //console.log(json[r]);
+  fixRow(json[r]);
+
+}
+for (var r = 0; r < json.length; r++) {
+  processRow(json[r]);
+}
+//
+
+
+//processRow(json[r]);
+
+function fixRow(voyage) {
+
+  for (var idx = 0; idx < voyage.locations.length; idx++) {
+    var platform = voyage.locations[idx];
     var indexcheck = platformList.indexOf(platform.name);
-    if ( indexcheck > -1) {
+    if (indexcheck < 0) {
+      voyage.locations.splice(idx, 1);
+    }
+  }
+}
+
+function processRow(voyage) {
+  //if(i<10){
+  //console.log(voyage);
+  var vessel = voyage.vessel;
+  var voyageCount = voyage.locations.length; //multiple platfroms
+  if (voyageCount > 0) {
+    var firstCompanyName = voyage.locations[0].companyName;
+    //console.log(voyage.locations);
+    var companystring = vessel.Name + " " + firstCompanyName + " " + voyageCount;
+    var multi = 0;
+    for (var idx = 0; idx < voyage.locations.length; idx++) {
+      var platform = voyage.locations[idx];
+      var indexcheck = platformList.indexOf(platform.name);
       i++;
-      var multi = 0;
       if (platform.companyName != firstCompanyName) {
         multi = 1 //multiple comapnies
       };
-      stream.write(i + "," + vessel.Name + ","+ vessel.Name.hashCode() + "," + platform.companyName + ","+ platform.companyName.hashCode()+ ","  + platform.name + ","+platform.name.hashCode() + ","  + voyageCount + "," + multi + "," + indexcheck +"\n");
-    }
-  });
+      companystring = companystring + " " + platform.companyName + " " +multi;
+
+      fs.appendFileSync('voyages3.csv', i + "," + vessel.Name + "," + vessel.Name.hashCode() + "," + platform.companyName + "," + platform.companyName.hashCode() + "," + platform.name + "," + platform.name.hashCode() + "," + voyageCount + "," + multi + "," + indexcheck + "\n");
 
 
+    };
+    console.log(companystring);
+    //}
+  }
 }

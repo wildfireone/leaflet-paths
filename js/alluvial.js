@@ -3,18 +3,18 @@
  * @Date:   22-Sep-172017
  * @Filename: alluvial.js
  * @Last modified by:   john
- * @Last modified time: 22-Sep-172017
+ * @Last modified time: 13-Dec-172017
  */
 
 
 
 
 
-	
 
-	var width = 1000;
 
-	var height = 1000;
+	var width = window.innerWidth;
+
+	var height = window.innerHeight;
 
 	var nodeWidth = 5;
 
@@ -116,7 +116,7 @@
 			    .attr("d", path )
 			    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 			    .style("fill","none")
-			    .style("stroke", function (d){ return "#000" })
+			    .style("stroke", function (d){ return getColour(d.source.name)})
 			    .style("stroke-opacity",".4")
 			    .sort(function(a, b) { return b.dy - a.dy; })
 			    .append("title")
@@ -132,7 +132,7 @@
 		node.append("rect")
 		    .attr("height", function(d) { return d.dy; })
 		    .attr("width", sankey.nodeWidth())
-		    .style("fill", function (d) { return d.sourceLinks.length ? colors(d.name) : "#666"; })
+		    .style("fill", function (d) { return "#666"; })
 		    .append("title")
 		    	.text(function(d) { return d.name + "\n" + format(d.value); });
 
@@ -146,7 +146,7 @@
 			    .style("font-size","11px")
 					.style("font-family","Arial, Helvetica")
 			    .style("pointer-events","none")
-			    .filter(function(d) { return d.x < +width() / 2; })
+			    .filter(function(d) { return d.x < +width / 2; })
 			    .attr("x", 6 + sankey.nodeWidth())
 		     	.attr("text-anchor", "start");
 
