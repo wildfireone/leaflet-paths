@@ -3,7 +3,7 @@
  * @Date:   20-Oct-172017
  * @Filename: processor.js
  * @Last modified by:   john
- * @Last modified time: 14-Dec-172017
+ * @Last modified time: 15-Dec-172017
  */
 
 
@@ -12,6 +12,7 @@ const StreamArray = require('stream-json/utils/StreamArray');
 const path = require('path');
 const fs = require('fs');
 var i = 0;
+var newJsonArray =[];
 
 var platformList = [
   "SCOTER (gas)",
@@ -131,7 +132,7 @@ Array.prototype.removeValue = function(name, value) {
   this.push.apply(this, array); //push all elements except the one we want to delete
 }
 
-fs.appendFileSync('voyages3.csv',"id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi,sortid\n");
+fs.appendFileSync('voyages10.csv',"id" + ",vesselName,vhash,companyName,chash,platformName,phash,voyageCount,multi,sortid\n");
 
 var json = JSON.parse(require('fs').readFileSync('exp-data/voyages.json', 'utf8'));
 for (var r = 0; r < json.length; r++) {
@@ -139,8 +140,10 @@ for (var r = 0; r < json.length; r++) {
   fixRow(json[r]);
 
 }
-for (var r = 0; r < json.length; r++) {
-  processRow(json[r]);
+
+//console.log(newJsonArray);
+for (var r = 0; r < newJsonArray.length; r++) {
+  processRow(newJsonArray[r]);
 }
 //
 
@@ -148,13 +151,18 @@ for (var r = 0; r < json.length; r++) {
 //processRow(json[r]);
 
 function fixRow(voyage) {
-
+var fixedLocations =[];
   for (var idx = 0; idx < voyage.locations.length; idx++) {
     var platform = voyage.locations[idx];
     var indexcheck = platformList.indexOf(platform.name);
-    if (indexcheck < 0) {
-      voyage.locations.splice(idx, 1);
+    if (indexcheck >= 0) {
+      fixedLocations.push(voyage.locations[idx]);
     }
+  }
+  if(fixedLocations.length >0){
+    voyage.locations = fixedLocations;
+    newJsonArray.push(voyage);
+    //console.log(newJsonArray.length);
   }
 }
 
@@ -163,9 +171,10 @@ function processRow(voyage) {
   //console.log(voyage);
   var vessel = voyage.vessel;
   var voyageCount = voyage.locations.length; //multiple platfroms
-  if (voyageCount > 0) {
+  //if (voyageCount > 0) {
+  console.log(voyage.locations);
     var firstCompanyName = voyage.locations[0].companyName;
-    //console.log(voyage.locations);
+
     var companystring = vessel.Name + " " + firstCompanyName + " " + voyageCount;
     var multi = 0;
     for (var idx = 0; idx < voyage.locations.length; idx++) {
@@ -177,11 +186,11 @@ function processRow(voyage) {
       };
       companystring = companystring + " " + platform.companyName + " " +multi;
 
-      fs.appendFileSync('voyages3.csv', i + "," + vessel.Name + "," + vessel.Name.hashCode() + "," + platform.companyName + "," + platform.companyName.hashCode() + "," + platform.name + "," + platform.name.hashCode() + "," + voyageCount + "," + multi + "," + indexcheck + "\n");
+      fs.appendFileSync('voyages10.csv', i + "," + vessel.Name + "," + vessel.Name.hashCode() + "," + platform.companyName + "," + platform.companyName.hashCode() + "," + platform.name + "," + platform.name.hashCode() + "," + voyageCount + "," + multi + "," + indexcheck + "\n");
 
 
     };
-    console.log(companystring);
+    //console.log(companystring);
     //}
-  }
+  //}
 }

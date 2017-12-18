@@ -31,8 +31,10 @@
         </select> -->
          <!--<button id="btn" type="button">Show/Hide tracks</button>-->
          <button id="btnTrack" type="button">Show all tracks</button>
-         <button id="btnPlat" type="button">Show only multi-platfrom journeys</button>
-         <button id="btnOper" type="button">Show only multi-operator journeys</button>
+         <button id="btnPlat" type="button">Show  multi-platfrom journeys</button>
+         <button id="btnOper" type="button">Show  multi-operator journeys</button>
+         <button id="btnPlatS" type="button">Show single-platfrom journeys</button>
+         <button id="btnOperS" type="button">Show single-operator journeys</button>
   </section>
   <section id="graph">
   </section>
@@ -131,6 +133,38 @@
             highlightConditionalAllSelect("multi1", "showLinkMultiOper")
             $('#btnOper').css("background-color","blue");
             $('#btnOper').css("color","white");
+          }
+          //console.log("multi-operators " + opersOn);
+        });
+        $('#btnPlatS').click(function(event) {
+          if (platssOn) {
+            platssOn = false;
+            //rmAllSelect()
+            rmHighlightConditionalAllSelect("count1", "showLinkSinglePlat")
+            $('#btnPlatS').css("background-color","white");
+            $('#btnPlatS').css("color","black");
+          } else {
+            platssOn = true;
+            //rmAllSelect()
+            highlightConditionalAllSelect("count1", "showLinkSinglePlat")
+            $('#btnPlatS').css("background-color","blue");
+            $('#btnPlatS').css("color","white");
+          }
+        //  console.log("multi-platform " + platsOn);
+        });
+        $('#btnOperS').click(function(event) {
+          if (operssOn) {
+            operssOn = false;
+            //rmAllSelect()
+            rmHighlightConditionalAllSelect("multi0", "showLinkMultiOper")
+            $('#btnOperS').css("background-color","white");
+            $('#btnOperS').css("color","black");
+          } else {
+            operssOn = true;
+            //rmAllSelect()
+            highlightConditionalAllSelect("multi0", "showLinkMultiOper")
+            $('#btnOperS').css("background-color","blue");
+            $('#btnOperS').css("color","white");
           }
           //console.log("multi-operators " + opersOn);
         });
